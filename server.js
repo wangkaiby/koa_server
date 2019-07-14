@@ -15,10 +15,10 @@ const cors = require('koa2-cors');
 // 具体参数我们在后面进行解释
 app.use(cors({
     origin: function (ctx) {
-        if (ctx.url === '/koaapi') {
-            return "*"; // 允许来自所有域名请求
-        }
-        return 'http://localhost:8080'; // 这样就能只允许 http://localhost:8080 这个域名的请求了
+        // if (ctx.url === '/koaapi') {
+        //     return "*"; // 允许来自所有域名请求
+        // }
+        return '*'; // 这样就能只允许 http://localhost:8080 这个域名的请求了
     },
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
@@ -27,27 +27,23 @@ app.use(cors({
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }))
 
-router.post('/koaapi', async function (ctx) {
+router.post('/koaapi/addList', async function (ctx) {
     const obj =ctx.request.body
      await ModelDb.save(obj)
     let data = await ModelDb.query()
+    let reverseData = data.reverse()
     // ctx.response.body = data
-
     ctx.res.statusCode = '100'
     ctx.res.message = 'ok'
-    ctx.body = {'data': data, 'status': ctx.res.statusCode, 'message':ctx.res.message}
+    ctx.body = {'data': reverseData, 'status': ctx.res.statusCode, 'message':ctx.res.message}
 });
-router.get('/koaList', async function (ctx) {
+router.get('/koaapi/getList', async function (ctx) {
     let data = await ModelDb.query()
-    console.log(data, 333)
-
-    // ctx.response.body = data
-
+    let reverseData = data.reverse()
     ctx.res.statusCode = '100'
     ctx.res.message = 'ok'
-    ctx.body = {'data': data, 'status': ctx.res.statusCode, 'message':ctx.res.message}
+    ctx.body = {'data': reverseData, 'status': ctx.res.statusCode, 'message':ctx.res.message}
 });
-
 app
     .use(router.routes())
     .use(router.allowedMethods());
