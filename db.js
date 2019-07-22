@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const DB_URL = 'mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb'
+const DB_URL = `mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb`
 
 mongoose.connect(DB_URL)
 
@@ -19,5 +19,12 @@ mongoose.connection.on('error',function(err) {
 mongoose.connection.on('disconnected',function() {
   console.log('Mongoose connection disconnected');
 });
+/**
+* 连接成功！
+*/
+mongoose.connection.on('connected',function() {
+  console.log('Mongoose has been connected');
+});
+
 
 module.exports = mongoose

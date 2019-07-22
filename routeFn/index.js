@@ -1,4 +1,4 @@
-const ModelDb = require('../operate')
+const ModelDb = require('../options/operate')
 
 function resStatus (reverseData, ctx) {
     ctx.res.statusCode = '100'
